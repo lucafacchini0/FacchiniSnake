@@ -6,7 +6,7 @@ public class Player {
 
     // Coordinates
     public int x, y;
-    public int timeBeforeNextMove = 60;
+    public int timeBeforeNextMove = 7;
     public int currentTime = 0;
 
     // Apple TODO: To implement a system to eat the apple
@@ -44,12 +44,22 @@ public class Player {
                 System.out.println("Game Over");
             }
 
+            // Check if apple is eaten
+
+
             currentTime = 0;
+        }
+
+        if(x == wm.apple.x && y == wm.apple.y) {
+            appleEaten = true;
+
+            // Debug
+            System.out.println("Apple eaten");
         }
     }
 
     public void draw(Graphics2D g2d) {
-        g2d.setColor(Color.RED);
+        g2d.setColor(Color.GREEN);
         g2d.fillRect(x, y, wm.RESCALED_TILE, wm.RESCALED_TILE);
     }
 }

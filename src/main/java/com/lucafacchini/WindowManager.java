@@ -34,9 +34,11 @@ public class WindowManager extends JPanel implements Runnable {
         executorService.scheduleAtFixedRate(this, 0, 16, TimeUnit.MILLISECONDS);
     }
 
+
     @Override
     public void run() {
-        apple.spawn();
+
+        if(player.appleEaten) { apple.spawn(); player.appleEaten = false; System.out.println("IF ENTERED"); }
         player.update();
         this.repaint();
     }
