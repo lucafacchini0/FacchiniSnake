@@ -6,15 +6,18 @@ public class Player {
 
     // Coordinates
     public int x, y;
-    public int timeBeforeNextMove = 5;
+    public int timeBeforeNextMove = 60;
     public int currentTime = 0;
+
+    // Apple TODO: To implement a system to eat the apple
+    public boolean appleEaten = true;
 
     WindowManager wm;
 
     public Player(WindowManager wm) {
         this.wm = wm;
-        x = (wm.COLUMNS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE / 2;
-        y = (wm.ROWS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE / 2;
+        x = (wm.COLUMNS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE;
+        y = (wm.ROWS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE;
     }
 
     public void update() {
