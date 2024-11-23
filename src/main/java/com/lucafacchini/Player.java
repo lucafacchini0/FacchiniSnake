@@ -1,65 +1,51 @@
 package com.lucafacchini;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
+    public Tile head;
+    public ArrayList<Tile> body;
 
-    // Coordinates
-    public int x, y;
-    public int timeBeforeNextMove = 7;
-    public int currentTime = 0;
-
-    // Apple TODO: To implement a system to eat the apple
-    public boolean appleEaten = true;
-
-    WindowManager wm;
-
-    public Player(WindowManager wm) {
-        this.wm = wm;
-        x = (wm.COLUMNS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE;
-        y = (wm.ROWS / 2) * wm.RESCALED_TILE - wm.RESCALED_TILE;
+    public Player() {
+        head = new Tile(5, 5);
+        body = new ArrayList<>();
     }
 
-    public void update() {
+    public void move(WindowManager wm) {
 
-        currentTime += 1;
-
-        System.out.println(currentTime);
-
-
-        if(currentTime >= timeBeforeNextMove) {
-            switch(wm.kh.currentDirection) {
-                case UP -> y -= wm.RESCALED_TILE;
-                case DOWN -> y += wm.RESCALED_TILE ;
-                case LEFT -> x -= wm.RESCALED_TILE;
-                case RIGHT -> x += wm.RESCALED_TILE;
-            }
-
-            // Debugging
-            if(x < 0 || x > wm.WINDOW_WIDTH) {
-                System.out.println("Game Over");
-            }
-
-            if(y < 0 || y > wm.WINDOW_HEIGHT) {
-                System.out.println("Game Over");
-            }
-
-            // Check if apple is eaten
-
-
-            currentTime = 0;
+        // Check collision with the apple
+        if(wm.cm.isColliding(head, wm.apple)) {
+            body.add(new Tile(wm.apple.x, wm.apple.y));
+            wm.apple.spawn(wm);
         }
 
-        if(x == wm.apple.x && y == wm.apple.y) {
-            appleEaten = true;
+        for (int i = body.size() - 1; i >= 0; i--) {
+            Tile current = body.get(i);
 
-            // Debug
-            System.out.println("Apple eaten");
+            if (i != 0) {
+                Tile previous = body.get(i - 1);
+                current.x = previous.x;
+                current.y = previous.y;
+            } else {
+                current.x = head.x;
+                current.y = head.y;
+            }
         }
+
+        head.x += wm.kh.speedX;
+        head.y += wm.kh.speedY;
     }
 
-    public void draw(Graphics2D g2d) {
-        g2d.setColor(Color.GREEN);
-        g2d.fillRect(x, y, wm.RESCALED_TILE, wm.RESCALED_TILE);
+    public void draw(WindowManager wm, Graphics2D g2d) {
+
+        // Snake Head
+        g2d.setColor(Color.green);
+        g2d.fillRect(wm.player.head.x * wm.TILE_SIZE, wm.player.head.y * wm.TILE_SIZE, wm.TILE_SIZE, wm.TILE_SIZE);
+
+        // Snake Body
+        for (Tile snakePart : body) {
+            g2d.fillRect(snakePart.x * wm.TILE_SIZE, snakePart.y * wm.TILE_SIZE, wm.TILE_SIZE, wm.TILE_SIZE);
+        }
     }
 }

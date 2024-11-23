@@ -5,34 +5,27 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean isLeftPressed = false;
-    public boolean isRightPressed = false;
-    public boolean isUpPressed = false;
-    public boolean isDownPressed = false;
+    public int speedX;
+    public int speedY;
 
-    public enum Direction {
-        UP, DOWN, LEFT, RIGHT
+    public KeyHandler() {
+        this.speedX = 1;
+        this.speedY = 0;
     }
-
-    Direction currentDirection = Direction.UP;
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        // Not used
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP) { currentDirection = Direction.UP; }
-        if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) { currentDirection = Direction.DOWN; }
-        if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) { currentDirection = Direction.LEFT; }
-        if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) { currentDirection = Direction.RIGHT; }
+        if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_W) && speedY != 1) { speedX = 0; speedY = -1; }
+        if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) && speedY != -1) { speedX = 0; speedY = 1; }
+        if ((key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) && speedX != 1) { speedX = -1; speedY = 0; }
+        if ((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) && speedX != -1) { speedX = 1; speedY = 0; }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e) {}
 }
